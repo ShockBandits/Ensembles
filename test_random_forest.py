@@ -1,6 +1,6 @@
 from Cifar10_Ensemble.Cifar10_Classifiers.RandomForest import *
 
-rfc = Random_Forest_Classifier("RFC_0.cfg")
+rfc = RandomForest_Classifier("RFC_0.cfg")
 rfc.create()
 rfc.get_train_data()
 rfc.get_test_data()
@@ -11,7 +11,7 @@ rfc.print_conf_matrix('train')
 rfc.print_conf_matrix('test')
 rfc.save()
 
-rfc1 = Random_Forest_Classifier("RFC_0.cfg")
+rfc1 = RandomForest_Classifier("RFC_0.cfg")
 rfc1.read()
 rfc1.print_acc()
 rfc1.print_conf_matrix('train')

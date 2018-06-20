@@ -2,14 +2,14 @@ from . import *
 from sklearn.ensemble import RandomForestClassifier
 
 
-class Random_Forest_Classifier:
+class RandomForest_Classifier:
     
     cfg_spec_file = 'rfc_configspec.cfg'
     
     def __init__(self, cfg_file):
 
         config = read_cfg_file(cfg_file,
-                               Random_Forest_Classifier.cfg_spec_file)
+                               RandomForest_Classifier.cfg_spec_file)
         param_dict = config['Parameters']
         for curr_param in param_dict:
             self.__dict__[curr_param] = param_dict[curr_param]

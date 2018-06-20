@@ -1,5 +1,5 @@
 from Cifar10_Ensemble.Cifar10_Classifiers.ResNetV2 import *
-rnv2 = ResNet_V2_Classifier("RNV2_0.cfg")
+rnv2 = ResNetV2_Classifier("RNV2_0.cfg")
 rnv2.get_train_data('data_batch_1')
 rnv2.get_test_data('test_batch')
 rnv2.create()
@@ -10,7 +10,7 @@ rnv2.print_conf_matrix('train')
 rnv2.print_conf_matrix('test')
 rnv2.save()
 
-rnv21 = ResNet_V2_Classifier("RNV2_0.cfg")
+rnv21 = ResNetV2_Classifier("RNV2_0.cfg")
 rnv21.read()
 rnv21.print_acc()
 rnv21.print_conf_matrix('train')

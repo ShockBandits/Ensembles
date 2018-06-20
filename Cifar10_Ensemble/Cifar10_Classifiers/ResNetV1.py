@@ -14,14 +14,14 @@ from keras.regularizers import l2
 from ResNet_Utils import lr_schedule, resnet_block
 
 
-class ResNet_V1_Classifier:
+class ResNetV1_Classifier:
 
     cfg_spec_file = 'rnv1_configspec.cfg'
 
     def __init__(self, cfg_file):
 
         config = read_cfg_file(cfg_file,
-                               ResNet_V1_Classifier.cfg_spec_file)
+                               ResNetV1_Classifier.cfg_spec_file)
         param_dict = config['Parameters']
         for curr_param in param_dict:
             self.__dict__[curr_param] = param_dict[curr_param]

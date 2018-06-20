@@ -8,14 +8,14 @@ from keras.models import model_from_json
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
-class Simple_CNN_Classifier:
+class SimpleCNN_Classifier:
 
     cfg_spec_file = 'scnn_configspec.cfg'
 
     def __init__(self, cfg_file):
         
         config = read_cfg_file(cfg_file,
-                               Simple_CNN_Classifier.cfg_spec_file)
+                               SimpleCNN_Classifier.cfg_spec_file)
         param_dict = config['Parameters']
         for curr_param in param_dict:
             self.__dict__[curr_param] = param_dict[curr_param]

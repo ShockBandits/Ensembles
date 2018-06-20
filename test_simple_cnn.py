@@ -1,5 +1,5 @@
 from Cifar10_Ensemble.Cifar10_Classifiers.SimpleCNN import *
-scnn = Simple_CNN_Classifier("SCNN_0.cfg")
+scnn = SimpleCNN_Classifier("SCNN_0.cfg")
 scnn.get_train_data('data_batch_1')
 scnn.get_test_data('test_batch')
 scnn.create()
@@ -10,7 +10,7 @@ scnn.print_conf_matrix('train')
 scnn.print_conf_matrix('test')
 scnn.save()
 
-scnn1 = Simple_CNN_Classifier("SCNN_0.cfg")
+scnn1 = SimpleCNN_Classifier("SCNN_0.cfg")
 scnn1.read()
 scnn1.print_acc()
 scnn1.print_conf_matrix('train')
