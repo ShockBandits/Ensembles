@@ -235,8 +235,8 @@ class ResNetV1_Classifier:
                                           workers=4)
 
     def get_metrics(self):
-        self.train_acc = self.classifier.evaluate(self.train_data,
-                                                  self.train_labels)
+        self.train_acc = self.get_acc(self.train_data,
+                                      self.train_labels)
         self.train_conf_matrix = self.get_conf_matrix(self.train_data,
                                                       self.train_labels)
         self.summary_dict['train_acc'] = self.train_acc
@@ -244,12 +244,21 @@ class ResNetV1_Classifier:
         
 
         if self.has_test_data:
-            self.test_acc = self.classifier.evaluate(self.test_data,
-                                                     self.test_labels)
+            self.test_acc = self.get_acc(self.test_data,
+                                         self.test_labels)
             self.test_conf_matrix = self.get_conf_matrix(self.test_data,
                                                          self.test_labels)
             self.summary_dict['test_acc'] = self.test_acc
             self.summary_dict['test_conf_matrix'] = self.test_conf_matrix
+        else:
+            self.summary_dict['test_acc'] = None
+            self.summary_dict['test_conf_matrix'] = None
+
+        return (self.summary_dict['train_acc'],
+                self.summary_dict['train_conf_matrix'],
+                self.summary_dict['test_acc'],
+                self.summary_dict['test_conf_matrix'])
+                
 
             
     def classify(self, sample):
@@ -293,6 +302,9 @@ class ResNetV1_Classifier:
             print '\n',df,'\n'
         else:
             print "Unknown"
+
+    def get_acc(self, data, true_labels):
+        return self.classifier.evaluate(data, true_labels)
 
     def print_acc(self):
         print "Training Acc:", 
