@@ -50,17 +50,19 @@ class XGBoost_Classifier:
                     open(outfile, 'wb'))
         print "Saved to ",outfile
 
-    def get_train_data(self):
-        cifar_dict = getCifar10(self.train_data_file)
+    def get_train_data(self, filename):
+        cifar_dict = getCifar10(filename)
         self.train_data = cifar_dict['data']
         self.train_labels = np.asarray(cifar_dict['labels'])
         self.has_train_data = True
+        self.train_data_file = filename
         
-    def get_test_data(self):
-        cifar_dict = getCifar10(self.test_data_file)
+    def get_test_data(self, filename):
+        cifar_dict = getCifar10(filename)
         self.test_data = cifar_dict['data']
         self.test_labels = np.asarray(cifar_dict['labels'])
         self.has_test_data = True
+        self.test_data_file = filename
         
     def fit(self):
         if not self.has_train_data:
@@ -96,10 +98,12 @@ class XGBoost_Classifier:
                 self.summary_dict['test_acc'],
                 self.summary_dict['test_conf_matrix'])
                 
-
+    def get_sample(self, dataset, samp_num):
+        temp = dataset[samp_num,:]
+        return temp[np.newaxis,:]                           
 
     def classify(self, sample):
-        return  self.classifier.predict_proba(sample)
+        return  self.classifier.predict_proba(sample)[0]
 
     def get_conf_matrix(self, data, true_labels):
         pred_labels = self.classifier.predict(data)

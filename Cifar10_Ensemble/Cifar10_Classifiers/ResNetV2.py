@@ -186,6 +186,7 @@ class ResNetV2_Classifier:
             self.train_data -= self.train_mean
         
         self.has_train_data = True
+        self.train_data_file = filename
         
     def get_test_data(self, filename):
         cifar_dict = getCifar10(filename, reshape_data = True)
@@ -206,6 +207,7 @@ class ResNetV2_Classifier:
                                                       self.num_classes)
         
         self.has_test_data = True
+        self.test_data_file = filename
         
     def fit(self):
         if not self.has_train_data:
@@ -275,11 +277,12 @@ class ResNetV2_Classifier:
                 self.summary_dict['test_acc'],
                 self.summary_dict['test_conf_matrix'])
                 
-            
-
+    def get_sample(self, dataset, samp_num):
+        temp = dataset[samp_num,:,:,:]
+        return temp[np.newaxis,:]                           
             
     def classify(self, sample):
-        return  self.classifier.predict_proba(sample)
+        return  self.classifier.predict_on_batch(sample)[0]
 
     def get_conf_matrix(self, data, true_labels):
         true_labels = np.argmax(true_labels, 1)

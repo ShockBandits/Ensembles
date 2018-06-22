@@ -8,6 +8,8 @@ import pandas as pd
 import sys
 from validate import Validator
 
+from .Cifar10_Accessor.readCifar10 import getCifar10, getMetaDict
+
 #from .Cifar10_Accessor.readCifar10 import getCifar10, getMetaDict
 
 #from .Cifar10_Classifiers.RandomForest import RandomForest_Classifier
@@ -50,9 +52,40 @@ class Ensemble(object):
                 sys.exit(1)
         print "\n"
 
+        self.has_train_data = False
+        self.has_test_data = False
+        self.train_data_file = config['datasets']['train_data_file']
+        self.test_data_file = config['datasets']['test_data_file']
+
+        
+
+    def get_train_data(self):
+        cifar_dict = getCifar10(self.train_data_file)
+        self.train_data = cifar_dict['data']
+        self.train_labels = np.asarray(cifar_dict['labels'])
+        self.has_train_data = True
+        
+    def get_test_data(self):
+        cifar_dict = getCifar10(self.test_data_file)
+        self.test_data = cifar_dict['data']
+        self.test_labels = np.asarray(cifar_dict['labels'])
+        self.has_test_data = True
+
+    def assign_members_train_data(self):
+        for curr_clfr_type in self.classifier_dict:
+            for ctr, clfr in enumerate(self.classifier_dict[curr_clfr_type]):
+                print "Geting data for", curr_clfr_type
+                clfr.get_train_data(self.train_data_file)
+        print
+
+    def assign_members_test_data(self):
+        for curr_clfr_type in self.classifier_dict:
+            for ctr, clfr in enumerate(self.classifier_dict[curr_clfr_type]):
+                print "Geting data for", curr_clfr_type
+                clfr.get_test_data(self.test_data_file)
+        print
 
     def load_classifiers(self):
-
         for curr_clfrs in self.classifier_dict:
             for curr in self.classifier_dict[curr_clfrs]:
                 curr.read()
@@ -70,7 +103,23 @@ class Ensemble(object):
                 self.print_indiv_acc(curr_clfr_type, ctr)
                 print 
             print 
-        print "\n"
+        print 
+
+    def test_classifiers(self,sample_image_nums):
+        for curr_image_num in sample_image_nums:
+            print "Current Image Number: %d"%(curr_image_num)  
+            print "Current Image Label: %d"%(self.train_labels[curr_image_num])
+
+            for curr_clfr_type in self.classifier_dict:
+                for ctr, clfr in enumerate(self.classifier_dict[curr_clfr_type]):
+                    samp = clfr.get_sample(clfr.train_data,
+                                           curr_image_num)
+                    labels = clfr.classify(samp)
+                    print clfr.name," - Most Probable Label:", np.argmax(labels)
+                    print labels,'\n'
+            print "---------------------------------------------------\n"
+
+        
             
 
         
